@@ -12,7 +12,7 @@
     <p class="text-xl mb-6">The Fortress of Cricket Knowledge is Coming Soon!</p>
     <p class="mb-2">Stay tuned for live scores, rules, history & exclusive gear.</p>
     <p>📧 Subscribe at <a href="mailto:contact@citadelofcricket.com" class="underline">admin@citadelofcricket.com</a></p>
-    
+
     <div class="mt-6 space-x-4">
       <a href="Store.html" class="underline">Store</a>
       <a href="about.html" class="underline">About</a>
@@ -20,6 +20,40 @@
       <a href="insights.html" class="underline">Insights</a>
       <a href="news.html" class="underline">News</a>
     </div>
+
+    <!-- Live Scores Section -->
+    <div class="mt-10">
+      <h2 class="text-2xl font-bold mb-2">Live Cricket Scores</h2>
+      <div id="live-scores" class="text-left text-sm max-w-md mx-auto"></div>
+    </div>
   </div>
+
+  <script>
+    const apiKey = "de43dd51-8fa1-4e67-be6a-8e3ff24f5fa1"; // Replace this with your actual API key
+    const url = `https://api.cricapi.com/v1/currentMatches?apikey=${apiKey}&offset=0`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const matches = data.data || [];
+        const container = document.getElementById("live-scores");
+
+        if (matches.length === 0) {
+          container.innerHTML = "No live matches currently.";
+          return;
+        }
+
+        container.innerHTML = matches.map(match => `
+          <div class="mb-3">
+            <strong>${match.name}</strong><br/>
+            ${match.status}
+          </div>
+        `).join('');
+      })
+      .catch(err => {
+        document.getElementById("live-scores").innerHTML = "Error loading live scores.";
+        console.error(err);
+      });
+  </script>
 </body>
 </html>
